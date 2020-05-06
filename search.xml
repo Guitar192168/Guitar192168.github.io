@@ -8,7 +8,7 @@
       <link href="/2020/04/18/%E6%97%A5%E6%9C%9F%E8%BD%AC%E6%8D%A2/"/>
       <url>/2020/04/18/%E6%97%A5%E6%9C%9F%E8%BD%AC%E6%8D%A2/</url>
       
-        <content type="html"><![CDATA[<p>工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。</p><p>1.最基本的  new Date()</p>]]></content>
+        <content type="html"><![CDATA[<pre><code>    工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。</code></pre><p>1.最基本的  new Date()能够获取到</p>]]></content>
       
       
       
