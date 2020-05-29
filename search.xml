@@ -4,13 +4,32 @@
   
     
     <entry>
+      <title>小程序登陆流程</title>
+      <link href="/2020/05/30/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%99%BB%E9%99%86%E6%B5%81%E7%A8%8B/"/>
+      <url>/2020/05/30/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%99%BB%E9%99%86%E6%B5%81%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<img src="/2020/05/30/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%99%BB%E9%99%86%E6%B5%81%E7%A8%8B/login.jpg" class title="官方流程图">]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>日期转换</title>
       <link href="/2020/04/18/%E6%97%A5%E6%9C%9F%E8%BD%AC%E6%8D%A2/"/>
       <url>/2020/04/18/%E6%97%A5%E6%9C%9F%E8%BD%AC%E6%8D%A2/</url>
       
-        <content type="html"><![CDATA[<p>工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。最近遇到的是如何让时间回显到element的日期选择器呢？</p><p>1.最基本的new Date().在调用Date构造函数而不传递参数的情况下，新创建的对象会自动获取当前日期和时间</p><pre><code>new Date()Fri May 29 2020 00:32:59 GMT+0800 (中国标准时间)</code></pre><p>如果想根据特定的日期和时间来创建对象，必须传入该日期的毫秒数（即从UTC时间1970年1月1日午夜起至到当前时间的毫秒数）。为了简化这一过程，有两个方法，</p><pre><code>Date.parse()  Date.UTC()做个示范:new Date(Date.parse(&#39;2020-04-02&#39;))Thu Apr 02 2020 08:00:00 GMT+0800 (中国标准时间)</code></pre><p>这样就会返回</p>]]></content>
+        <content type="html"><![CDATA[<p>工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。最近遇到的是如何让时间回显到element的日期选择器呢？</p><p>1.最基本的new Date().在调用Date构造函数而不传递参数的情况下，新创建的对象会自动获取当前日期和时间</p><pre><code>new Date()Fri May 29 2020 00:32:59 GMT+0800 (中国标准时间)</code></pre><p>2.如果想根据特定的日期和时间来创建对象，必须传入该日期的毫秒数（即从UTC时间1970年1月1日午夜起至到当前时间的毫秒数）。为了简化这一过程，有两个方法，</p><pre><code>Date.parse()  Date.UTC()做个示范:new Date(Date.parse(&#39;2020-04-02&#39;))则会返回给你Thu Apr 02 2020 08:00:00 GMT+0800 (中国标准时间)</code></pre><p>而这个值正是饿了么框架里面，时间选择器选中的时候的值。即你可以使用上面的代码将接口返回的时间的值变为GMT+0800 的这种格式。<br>这样就会回显到时间选择器上面。</p><p>3.如何将new Date()转换成2020-05-30这种格式呢？依次调用 getFullYear,getMonth,getDate方法即可。</p><pre><code>function todayNow() {  let timeStr &#x3D; &#39;-&#39;;  let curDate &#x3D; new Date();  var curYear &#x3D; curDate.getFullYear();  &#x2F;&#x2F;获取完整的年份(4位,1970-????)  var curMonth &#x3D; curDate.getMonth() + 1;  &#x2F;&#x2F;获取当前月份(0-11,0代表1月)  var curDay &#x3D; curDate.getDate();       &#x2F;&#x2F;获取当前日(1-31)  var Current &#x3D; curYear + timeStr + ( curMonth &lt; 10 ? &quot;0&quot; : &quot;&quot;) +  curMonth + timeStr + curDay;  return Current;}</code></pre><p>需要注意的一点是getMonth获取的是0-11月，就类似数组里的索引。这里的0代表的是1月。<br>new Date().getMonth()给我返回的是4，而今天是5月30日，所以需要在使用的时候在后面记得加1。<br>其次就是对于 1月到9月这几个月，是只有个位数的，需要将其补成 两位数的。 2020-01-21 这种格式。</p><p>上面那种不够灵性，这里还有第二种方案，语法比较简洁。使用map循环，给‘年月日’[year, month, day]每一项都进行判断，是否为 个位数，然后进行 位数的补充。再调用join(‘-‘),将[year, month, day]这个数组变成以 - 分割的字符串。</p><pre><code>const formatTime &#x3D; date &#x3D;&gt; {  const year &#x3D; date.getFullYear()  const month &#x3D; date.getMonth() + 1  const day &#x3D; date.getDate()  const hour &#x3D; date.getHours()  const minute &#x3D; date.getMinutes()  const second &#x3D; date.getSeconds()  return [year, month, day].map(formatNumber).join(&#39;-&#39;) + &#39; &#39; + [hour, minute, second].map(formatNumber).join(&#39;:&#39;)}const formatNumber &#x3D; n &#x3D;&gt; {  n &#x3D; n.toString()  return n[1] ? n : &#39;0&#39; + n}module.exports &#x3D; {  formatTime: formatTime}</code></pre><p>4.如何获取到时间戳呢？</p><pre><code>Date.now()或者new Date().getTime()</code></pre><p>即刻得到<br>那么如何将时间戳转换为时间？<br>那我们需要先将其传入 new Date()内，作为参数。有一点还是需要注意的，时间戳是以‘毫秒’为单位。那么我们需要将其 <em>1000，然后再进行格式的转换。<br>new Date(Date.now()</em>1000)<br>这里需要  *1000，然后就可以像上面第三步那样进行 时间戳到时间的转换了。</p><p>5.一个方法，捷径。Date类型还有一个方法<br>toLocaleDateString()</p><pre><code>new Date().toLocaleDateString()&quot;2020&#x2F;5&#x2F;30&quot;</code></pre><p>然后通过replace替换啊。不过还是要判断下 月份，日期是否是  个位数</p><p>6.还有更多的方法，再遇到了再进行补充。</p>]]></content>
       
       
+      
+        <tags>
+            
+            <tag> 时间格式转换 </tag>
+            
+        </tags>
       
     </entry>
     
@@ -37,6 +56,29 @@
         <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class=" language-bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class=" language-bash"><code class="language-bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class=" language-bash"><code class="language-bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class=" language-bash"><code class="language-bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
       
       
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>原生小程序开发的自定义</title>
+      <link href="/2020/03/30/%E5%8E%9F%E7%94%9F%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/"/>
+      <url>/2020/03/30/%E5%8E%9F%E7%94%9F%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/</url>
+      
+        <content type="html"><![CDATA[<p>做小程序的时候，有这样一个需求。用户点击底部栏。不进行跳转，反而是有个窗口出现。</p><img src="/2020/03/30/%E5%8E%9F%E7%94%9F%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91/pasted-7.png" class title="如上图所示">]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 微信小程序 </tag>
+            
+            <tag> 原生 </tag>
+            
+            <tag> 自定义 </tag>
+            
+        </tags>
       
     </entry>
     
