@@ -460,7 +460,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    60
+                    231
                 </div>
                 
 
@@ -482,7 +482,16 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <pre><code>    工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。</code></pre><p>1.最基本的  new Date()能够获取到</p>
+                <p>工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。最近遇到的是如何让时间回显到element的日期选择器呢？</p>
+<p>1.最基本的new Date().在调用Date构造函数而不传递参数的情况下，新创建的对象会自动获取当前日期和时间</p>
+<pre><code>new Date()
+Fri May 29 2020 00:32:59 GMT+0800 (中国标准时间)</code></pre>
+<p>如果想根据特定的日期和时间来创建对象，必须传入该日期的毫秒数（即从UTC时间1970年1月1日午夜起至到当前时间的毫秒数）。为了简化这一过程，有两个方法，</p>
+<pre><code>Date.parse()  Date.UTC()
+做个示范:
+new Date(Date.parse(&#39;2020-04-02&#39;))
+Thu Apr 02 2020 08:00:00 GMT+0800 (中国标准时间)</code></pre>
+<p>这样就会返回</p>
 
             </div>
             <hr/>
@@ -728,8 +737,8 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                                工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。1.最基本的  new Date()能够获取到
-
+                            工作中几次遇到日期转换，总是不会用。复制了又忘。再次查找时总是找不到满意的，挑选再三。浪费时间。现在总结一下。最近遇到的是如何让时间回显到element的日期选择器呢？
+1.最基本的new Date().在调用Date构造函数而不传递参数的
                         
                     </div>
                     <div class="publish-info">
@@ -985,7 +994,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">147</span>&nbsp;字
+                class="white-color">318</span>&nbsp;字
             
             
             
